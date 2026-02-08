@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="static/logo2.png">
+    <title>Negão do Suco Natural</title>
+    <meta name="description" content="Os melhores sucos naturais e saudáveis. Qualidade, sabor e saúde em cada copo!">
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navegação (Navigation) -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="static/logo2.png" alt="Logo Negão do Suco" class="logo-img">
+                <span>Negão do Sucôoooo</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Início</a></li>
+                <li><a href="#produtos" class="nav-link">Produtos</a></li>
+                <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                <li><a href="#depoimentos" class="nav-link">Depoimentos</a></li>
+                <li><a href="#contato" class="nav-link">Contato</a></li>
+            </ul>
+            <button class="cart-button" id="cartButton" aria-label="Carrinho de compras">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="hero-title animate-fade-in">Sabor Natural em Cada Gota</h1>
+            <p class="hero-subtitle animate-fade-in-delay">Sucos 100% naturais, frescos e saudáveis para o seu dia a dia</p>
+            <div class="hero-buttons animate-fade-in-delay-2">
+                <a href="#produtos" class="btn btn-primary">Ver Produtos</a>
+                <a href="#contato" class="btn btn-secondary">Entre em Contato</a>
+            </div>
+            <div class="scroll-indicator custom-scroll">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>100% Natural</h3>
+                    <p>Sem conservantes ou aditivos artificiais</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Saudável</h3>
+                    <p>Rico em vitaminas e nutrientes</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Fresquinho</h3>
+                    <p>Preparado na hora para você</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Qualidade</h3>
+                    <p>Frutas selecionadas e frescas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos Section -->
+    <section id="produtos" class="produtos">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nossos Produtos</h2>
+                <p class="section-subtitle">Descubra nossos sabores irresistíveis</p>
+            </div>
+            
+            <div class="produtos-grid">
+                <!-- Salada de Frutas -->
+                <div class="produto-card card-bg-salada">
+                    <div class="card-overlay"></div>
+                    <div class="produto-info card-content">
+                        <h3>Salada de frutas</h3>
+                        <p>Refrescante combinação tropical</p>
+                        <div class="produto-footer">
+                            <span class="produto-price">R$ 12,00</span>
+                            <button class="btn-add" onclick="addToCart('Salada de frutas')">
+                                <i class="fas fa-shopping-cart"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vitaminas -->
+                <div class="produto-card card-bg-vitaminas">
+                    <div class="card-overlay"></div>
+                    <div class="produto-info card-content">
+                        <h3>Vitaminas</h3>
+                        <div class="form-group-select">
+                            <select id="selectVitaminas" class="form-control select-custom">
+                                <option value="Vitamina Morango">Morango</option>
+                                <option value="Vitamina Maracuja">Maracuja</option>
+                                <option value="Vitamina Banana c/ Aveia">Banana c/ Aveia</option>
+                                <option value="Vitamina Abacate">Abacate</option>
+                            </select>
+                        </div>
+                        <div class="produto-footer">
+                            <span class="produto-price">R$ 15,00</span>
+                            <button class="btn-add" onclick="adicionarComSelect('selectVitaminas')">
+                                <i class="fas fa-shopping-cart"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sucos Naturais -->
+                <div class="produto-card card-bg-sucos">
+                    <div class="card-overlay"></div>
+                    <div class="produto-info card-content">
+                        <h3>Sucos Naturais</h3>
+                        <p>Escolha o seu sabor favorito!</p>
+
+                        <div class="form-group-select">
+                            <select id="selectSucos" class="form-control select-custom">
+                                <option value="Suco Laranja">Laranja</option>
+                                <option value="Suco Maracuja">Maracujá</option>
+                                <option value="Suco Abacaxi">Abacaxi</option>
+                                <option value="Suco Abacaxi c/ Hortela e Gengibre">Abacaxi c/ Hortelã e Gengibre</option>
+                                <option value="Suco Goiaba">Goiaba</option>
+                                <option value="Suco Manga">Manga</option>
+                                <option value="Suco Melancia">Melancia</option>
+                                <option value="Suco Limao">Limão</option>
+                                <option value="Suco Limao c/ Inhame">Limão c/ Inhame</option>
+                                <option value="Suco Beterraba c/ Cenoura, Laranja, Limao e Gengibre">Beterraba c/ Cenoura, Laranja, Limão e Gengibre</option>
+                                <option value="Suco Laranja c/ Acerola">Laranja c/ Acerola</option>
+                                <option value="Suco Laranja c/ Couve e Hortela">Laranja c/ Couve e Hortelã</option>
+                                <option value="Suco Laranja c/ Morango">Laranja c/ Morango</option>
+                                <option value="Suco Maracuja c/ Morango">Maracujá c/ Morango</option>
+                            </select>
+                        </div>
+                        
+                        <div class="produto-footer">
+                            <span class="produto-price">R$ 8,00</span>
+                            <button class="btn-add" onclick="adicionarComSelect('selectSucos')">
+                                <i class="fas fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sanduíches -->
+                <div class="produto-card card-bg-sanduiches">
+                    <div class="card-overlay"></div>
+                    <div class="produto-info card-content">
+                        <h3>Sanduíches</h3>
+                        <div class="form-group-select">
+                            <select id="Sanduiches" class="form-control select-custom">
+                                <option value="Sanduiche Natural">Sanduíche Natural</option>
+                                <option value="Pao c/ Linguica">Pão c/ Linguiça</option>
+                                <option value="Misto Quente">Misto Quente</option>
+                                <option value="Misto c/ Ovo">Misto c/ Ovo</option>
+                                <option value="Misto c/ Queijo e Peito de Peru">Misto c/ Queijo e Peito de Peru</option>
+                                <option value="Pao c/ Ovo, Bacon e Queijo Coalho">Pão c/ Ovo, Bacon e Queijo Coalho</option>
+                                <option value="Pao c/ Ovo e Bacon">Pão c/ Ovo e Bacon</option>
+                                <option value="Fielzao">Fielzão</option>
+                            </select>
+                        </div>
+                        <div class="produto-footer">
+                            <span class="produto-price" id="priceDisplay-sanduiches">R$ 10,00</span>
+                            <button class="btn-add" onclick="adicionarComSelect('Sanduiches')">
+                                <i class="fas fa-shopping-cart"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Tapiocas -->
+            <div class="produto-card card-bg-tapiocas">
+                    <div class="card-overlay"></div>
+                    <div class="produto-info card-content">
+                        <h3>Tapiocas</h3>
+                        <p>Escolha o seu sabor favorito preparado na hora!</p>
+                        <div class="form-group-select">
+                            <select id="saborTapioca" class="form-control select-custom">
+                                <optgroup label="Salgadas">
+                                    <option value="Tapioca Carne Seca c/ Queijo">Carne Seca c/ Queijo - R$ 20,00</option>
+                                    <option value="Tapioca Carne Seca c/ Catupiry">Carne Seca c/ Catupiry - R$ 20,00</option>
+                                    <option value="Tapioca Carne Seca c/ Cheddar">Carne Seca c/ Cheddar - R$ 20,00</option>
+                                    <option value="Tapioca Carne Seca c/ Requeijao">Carne Seca c/ Requeijão - R$ 22,00 </option>
+                                    <option value="Tapioca Frango c/ Queijo">Frango c/ Queijo - R$ 18,00</option>
+                                    <option value="Tapioca Frango c/ Cheddar">Frango c/ Cheddar- R$ 18,00</option>
+                                    <option value="Tapioca Frango c/ Catupiry">Frango c/ Catupiry - R$ 18,00</option>
+                                    <option value="Tapioca Frango c/ Requeijao">Frango c/ Requeijão - R$ 20,00</option>
+                                    <option value="Tapioca Calabresa c/ Queijo">Calabresa c/ Queijo - R$ 16,00</option>
+                                    <option value="Tapioca Calabresa c/ Cheddar">Calabresa c/ Cheddar - R$ 16,00</option>
+                                    <option value="Tapioca Queijo c/ Presunto">Queijo c/ Presunto - R$ 16,00</option>
+                                    <option value="Tapioca Queijo Branco c/ Peito de Peru">Queijo Branco c/ Peito de Peru - R$ 16,00</option>
+                                    <option value="Tapioca Queijo c/ Presunto, Calabresa e Cheddar">Queijo c/ Presunto, Calabresa e Cheddar - R$ 16,00</option>
+                                    <option value="Tapioca Bacon c/ Ovos e Queijo">Bacon c/ Ovos e Queijo - R$ 18,00</option>
+                                    <option value="Tapioca Bacon c/ Queijo e Requeijao">Bacon c/ Queijo e Requeijão - R$ 18,00</option>
+                                </optgroup>
+                                <optgroup label="Doces">
+                                    <option value="Tapioca Coco c/ Leite Condensado">Coco c/ Leite Condensado - R$ 16,00</option>
+                                    <option value="Tapioca Nutella">Nutella - R$ 16,00</option>
+                                    <option value="Tapioca Nutella c/ Oreo">Nutella c/ Oreo - R$ 17,00</option>
+                                    <option value="Tapioca Romeu e Julieta">Romeu e Julieta - R$ 16,00</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="produto-footer">
+                            <span class="produto-price" id="priceDisplay-tapioca">R$ 20,00</span>
+                            <button class="btn-add" onclick="addTapiocaComSabor()">
+                                <i class="fas fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Script auxiliar para atualizar o preço visual e adicionar o sabor correto
+        document.getElementById('saborTapioca').addEventListener('change', function() {
+            const precos = {
+                'Tapioca Carne Seca c/ Queijo': 'R$ 20,00',
+                'Tapioca Carne Seca c/ Catupiry': 'R$ 20,00',
+                'Tapioca Carne Seca c/ Cheddar': 'R$ 20,00',
+                'Tapioca Carne Seca c/ Requeijao': 'R$ 22,00',
+                'Tapioca Frango c/ Queijo': 'R$ 18,00',
+                'Tapioca Frango c/ Cheddar': 'R$ 18,00',
+                'Tapioca Frango c/ Catupiry': 'R$ 18,00',
+                'Tapioca Frango c/ Requeijao': 'R$ 20,00',
+                'Tapioca Calabresa c/ Queijo': 'R$ 16,00',
+                'Tapioca Calabresa c/ Cheddar': 'R$ 16,00',
+                'Tapioca Queijo c/ Presunto': 'R$ 16,00',
+                'Tapioca Queijo Branco c/ Peito de Peru': 'R$ 16,00',
+                'Tapioca Queijo c/ Presunto, Calabresa e Cheddar': 'R$ 16,00',
+                'Tapioca Bacon c/ Ovos e Queijo': 'R$ 18,00',
+                'Tapioca Bacon c/ Queijo e Requeijao': 'R$ 18,00',
+                'Tapioca Coco c/ Leite Condensado': 'R$ 16,00',
+                'Tapioca Nutella': 'R$ 16,00',
+                'Tapioca Nutella c/ Oreo': 'R$ 17,00',
+                'Tapioca Romeu e Julieta': 'R$ 16,00'
+            };
+            document.getElementById('priceDisplay-tapioca').innerText = precos[this.value];
+        });
+
+        // Script para atualizar o preço dos Sanduíches
+        document.getElementById('Sanduiches').addEventListener('change', function() {
+            const precosSanduiches = {
+                'Sanduiche Natural': 'R$ 10,00',
+                'Pao c/ Linguica': 'R$ 12,00',
+                'Misto Quente': 'R$ 8,00',
+                'Misto c/ Ovo': 'R$ 10,00',
+                'Misto c/ Queijo e Peito de Peru': 'R$ 12,00',
+                'Pao c/ Ovo, Bacon e Queijo Coalho': 'R$ 15,00',
+                'Pao c/ Ovo e Bacon': 'R$ 12,00',
+                'Fielzao': 'R$ 18,00'
+            };
+            document.getElementById('priceDisplay-sanduiches').innerText = precosSanduiches[this.value];
+        });
+
+        function addTapiocaComSabor() {
+            const sabor = document.getElementById('saborTapioca').value;
+            addToCart(sabor);
+        }
+        </script>
+        
+    <!-- Sobre Section -->
+    <section id="sobre" class="sobre">
+        <div class="container">
+            <div class="sobre-content">
+                <div class="sobre-image">
+                    <div class="sobre-image-placeholder">
+                        <i class="fas fa-store"></i>
+                    </div>
+                </div>
+                <div class="sobre-text">
+                    <h2>Sobre o Negão do Suco Natural</h2>
+                    <p class="sobre-intro">Somos especialistas em sucos naturais e saudáveis, trazendo o melhor da natureza para o seu copo!</p>
+                    <p>Nossa missão é proporcionar saúde e sabor em cada gole. Trabalhamos apenas com frutas frescas, selecionadas diariamente para garantir a máxima qualidade e nutrientes.</p>
+                    <p>Acreditamos que alimentação saudável deve ser saborosa e acessível. Por isso, criamos combinações únicas que agradam todos os paladares.</p>
+                    <div class="sobre-stats">
+                        <div class="stat">
+                            <div class="stat-number">4040+</div>
+                            <div class="stat-label">Clientes Felizes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Sabores</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Natural</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Feed Section -->
+    <section class="instagram-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Siga no Instagram</h2>
+                <p class="section-subtitle">@negaodosuconatural</p>
+            </div>
+            <div class="instagram-cta">
+                <a href="https://instagram.com/negaodosuconatural" target="_blank" class="btn btn-instagram">
+                    <i class="fab fa-instagram"></i> Seguir no Instagram
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato Section -->
+    <section id="contato" class="contato">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Entre em Contato</h2>
+                <p class="section-subtitle">Tire suas dúvidas ou faça seu pedido</p>
+            </div>
+            <div class="contato-content">
+                <div class="contato-info">
+                    <div class="info-card">
+                        <i class="fas fa-phone"></i>
+                        <h3>Telefone</h3>
+                        <p>(21) 9 70331233</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>negaodosuconatural@gmail.com</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Localização</h3>
+                        <p>Av. Agnor Chagas dos Santos LT 57 QD 9, São João de Meriti - RJ</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Horário</h3>
+                        <p>Seg - Sáb: 8h - 19h</p>
+                    </div>
+                </div>
+                <form class="contato-form" id="contatoForm">
+                    <div class="form-group">
+                        <input type="text" name="nome" placeholder="Seu Nome" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Seu Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="telefone" placeholder="Seu Telefone">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="mensagem" rows="5" placeholder="Sua Mensagem" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-paper-plane"></i> Enviar Mensagem
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-lemon"></i>
+                        <span>Negão do Suco</span>
+                    </div>
+                    <p>Sucos naturais e saudáveis para transformar o seu dia!</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/negaodosuconatural" target="_blank" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://wa.me/5521974440502" target="_blank" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#produtos">Produtos</a></li>
+                        <li><a href="#sobre">Sobre</a></li>
+                        <li><a href="#depoimentos">Depoimentos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Horário de Funcionamento</h3>
+                    <ul class="footer-schedule">
+                        <li>Segunda - Sábado: 8h - 19h</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> (21) 9 70331233</li>
+                        <li><i class="fas fa-envelope"></i> negaodosuconatural@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i>Av. Agnor Chagas dos Santos LT 57 QD 9, São João de Meriti - RJ</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Negão do Suco Natural. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Notification -->
+    <div class="cart-notification" id="cartNotification">
+        <i class="fas fa-check-circle"></i>
+        <span id="cartMessage">Produto adicionado ao carrinho!</span>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal-content">
+            <div class="cart-modal-header">
+                <h2><i class="fas fa-shopping-cart"></i> Meu Carrinho</h2>
+                <button class="close-cart" id="closeCart" aria-label="Fechar carrinho">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="cart-modal-body" id="cartModalBody">
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Seu carrinho está vazio</p>
+                    <a href="#produtos" class="btn btn-primary" onclick="closeCartModal()">Ver Produtos</a>
+                </div>
+            </div>
+            <div class="cart-modal-footer" id="cartModalFooter" style="display: none;">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="total-price" id="totalPrice">R$ 0,00</span>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="goToCheckout()">
+                    <i class="fas fa-credit-card"></i> Finalizar Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-modal-content">
+            <div class="checkout-header">
+                <button class="back-button" onclick="backToCart()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Finalizar Pedido</h2>
+                <button class="close-checkout" onclick="closeCheckout()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="checkout-body">
+                <div class="checkout-steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <span>Entrega</span>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <span>Pagamento</span>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <span>Confirmação</span>
+                    </div>
+                </div>
+
+                <div class="checkout-content">
+                    <!-- Step 1: Delivery -->
+                    <div class="checkout-step-content active" data-content="1">
+                        <h3>Informações de Entrega</h3>
+                        <form id="deliveryForm" class="delivery-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nome Completo *</label>
+                                    <input type="text" name="nome" required placeholder="Seu nome completo">
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefone *</label>
+                                    <input type="tel" name="telefone" required placeholder="(11) 99999-9999">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>CEP *</label>
+                                    <input type="text" name="cep" id="cep" required placeholder="00000-000" maxlength="9">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cidade *</label>
+                                    <input type="text" name="cidade" required placeholder="São Paulo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Endereço *</label>
+                                <input type="text" name="endereco" required placeholder="Rua, Avenida, etc">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Número *</label>
+                                    <input type="text" name="numero" required placeholder="123">
+                                </div>
+                                <div class="form-group">
+                                    <label>Complemento</label>
+                                    <input type="text" name="complemento" placeholder="Apto, Bloco, etc">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Bairro *</label>
+                                <input type="text" name="bairro" required placeholder="Centro">
+                            </div>
+                            <div class="form-group">
+                                <label>Ponto de Referência</label>
+                                <input type="text" name="referencia" placeholder="Próximo ao mercado">
+                            </div>
+                            <button type="button" class="btn btn-primary btn-full" onclick="nextStep(2)">
+                                Continuar <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: Payment -->
+                    <div class="checkout-step-content" data-content="2">
+                        <h3>Forma de Pagamento</h3>
+                        <div class="payment-methods">
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="dinheiro" checked>
+                                <div class="payment-card">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>Dinheiro</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="pix">
+                                <div class="payment-card">
+                                    <i class="fas fa-qrcode"></i>
+                                    <span>PIX</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="cartao">
+                                <div class="payment-card">
+                                    <i class="fas fa-credit-card"></i>
+                                    <span>Cartão</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="troco-section" id="trocoSection" style="display: block;">
+                            <label>Precisa de troco?</label>
+                            <div class="form-row">
+                                <label class="radio-inline">
+                                    <input type="radio" name="needChange" value="nao" checked> Não
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="needChange" value="sim"> Sim
+                                </label>
+                            </div>
+                            <div class="form-group" id="changeAmount" style="display: none;">
+                                <label>Troco para quanto?</label>
+                                <div class="input-container">
+                                    <input
+                                        type="number"
+                                        id="trocoValue"
+                                        step="0.01"
+                                        inputmode="decimal"
+                                        placeholder="Ex: 50.00"
+                                        class="form-control"
+                                    >
+                                </div>
+                                <small id="trocoAviso" style="color: #666; display: block; margin-top: 5px;">
+                                    Digite o valor total que vai entregar ao entregador.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="delivery-fee">
+                            <div class="fee-item">
+                                <span>Subtotal</span>
+                                <span id="subtotalCheckout">R$ 0,00</span>
+                            </div>
+                            <div class="fee-item">
+                                <span>Taxa de Entrega</span>
+                                <span id="deliveryFee">R$ 5,00</span>
+                            </div>
+                            <div class="fee-item total">
+                                <span>Total</span>
+                                <span id="totalCheckout">R$ 0,00</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-full" onclick="nextStep(3)">
+                            Continuar <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Step 3: Confirmation -->
+                    <div class="checkout-step-content" data-content="3">
+                        <h3>Confirme seu Pedido</h3>
+                        <div class="order-summary">
+                            <div class="summary-section">
+                                <h4><i class="fas fa-map-marker-alt"></i> Endereço de Entrega</h4>
+                                <p id="summaryAddress"></p>
+                            </div>
+                            <div class="summary-section">
+                                <h4><i class="fas fa-shopping-bag"></i> Itens do Pedido</h4>
+                                <div id="summaryItems"></div>
+                            </div>
+                            <div class="summary-section">
+                                <h4><i class="fas fa-credit-card"></i> Pagamento</h4>
+                                <p id="summaryPayment"></p>
+                            </div>
+                            <div class="summary-section">
+                                <h4><i class="fas fa-receipt"></i> Resumo</h4>
+                                <div class="summary-total">
+                                    <div class="summary-line">
+                                        <span>Subtotal</span>
+                                        <span id="finalSubtotal">R$ 0,00</span>
+                                    </div>
+                                    <div class="summary-line">
+                                        <span>Taxa de Entrega</span>
+                                        <span id="finalDeliveryFee">R$ 5,00</span>
+                                    </div>
+                                    <div class="summary-line total">
+                                        <span>Total</span>
+                                        <span id="finalTotal">R$ 0,00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-full" onclick="confirmOrder()">
+                            <i class="fas fa-check"></i> Confirmar Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script src="static/script.js"></script>
+    <script src="static/delivery.js"></script>
+</body>
+</html>
