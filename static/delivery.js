@@ -435,7 +435,7 @@ function confirmOrder() {
         message += `Cartão`;
     }
     
-    const whatsappUrl = `https://wa.me/5521970331233?text=${message}`;
+    const whatsappUrl = `https://wa.me/5521974440502?text=${message}`;
     window.open(whatsappUrl, '_blank');
     
     setTimeout(() => {

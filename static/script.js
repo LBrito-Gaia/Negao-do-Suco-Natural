@@ -70,7 +70,7 @@ contatoForm.addEventListener('submit', (e) => {
     
     // Criar mensagem para WhatsApp
     const whatsappMessage = `Olá! Meu nome é ${nome}.%0A%0AEmail: ${email}%0ATelefone: ${telefone}%0A%0AMensagem: ${mensagem}`;
-    const whatsappUrl = `https://wa.me/5521970331233?text=${whatsappMessage}`;
+    const whatsappUrl = `https://wa.me/5521974440502?text=${whatsappMessage}`;
     
     // Abrir WhatsApp
     window.open(whatsappUrl, '_blank');
