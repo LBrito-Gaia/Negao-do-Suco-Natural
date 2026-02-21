@@ -567,7 +567,7 @@ body {
 /* Instagram Section */
 .instagram-section {
     padding: 80px 0;
-    background: linear-gradient(135deg, #F09433 0%, #E6683C 25%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     text-align: center;
 }
 
@@ -1546,6 +1546,7 @@ body {
 .card-bg-sucos { background: url('foto9.png'); }
 .card-bg-sanduiches { background: url('foto16.png'); }
 .card-bg-tapiocas { background: url('foto8.png'); }
+.card-bg-adicionais { background: linear-gradient(135deg, #E8E8E8, #D3D3D3); }
 
 /* Overlay Escuro para legibilidade */
 .card-overlay {
@@ -1589,6 +1590,34 @@ body {
     border-radius: 5px;
     background: rgba(249, 248, 248, 0.9);
     border: none;
+}
+
+/* Estilos para os Adicionais (Checkboxes) */
+.adicionais-wrapper {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    max-height: 120px; /* Limita altura se tiver muitos itens */
+    overflow-y: auto;  /* Cria barra de rolagem se necessário */
+}
+
+.adicionais-titulo {
+    font-size: 0.85rem !important;
+    font-weight: bold;
+    margin-bottom: 5px !important;
+    color: #FFAB47 !important;
+}
+
+.adicional-item {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.adicional-item input {
+    margin-right: 8px;
 }
 
 /* Footer do Card */

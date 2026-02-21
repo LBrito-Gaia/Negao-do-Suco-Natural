@@ -125,7 +125,7 @@
                             </select>
                         </div>
                         <div class="produto-footer">
-                            <span class="produto-price">R$ 15,00</span>
+                            <span class="produto-price" id="priceDisplay-vitaminas"></span>
                             <button class="btn-add" onclick="adicionarComSelect('selectVitaminas')">
                                 <i class="fas fa-shopping-cart"></i> Adicionar
                             </button>
@@ -160,9 +160,9 @@
                         </div>
                         
                         <div class="produto-footer">
-                            <span class="produto-price">R$ 8,00</span>
+                            <span class="produto-price" id="priceDisplay-sucos"></span>
                             <button class="btn-add" onclick="adicionarComSelect('selectSucos')">
-                                <i class="fas fa-plus"></i> Adicionar
+                                <i class="fas fa-shopping-cart"></i> Adicionar
                             </button>
                         </div>
                     </div>
@@ -173,21 +173,32 @@
                     <div class="card-overlay"></div>
                     <div class="produto-info card-content">
                         <h3>Sanduíches</h3>
+                        <p>Monte o seu!</p>
                         <div class="form-group-select">
-                            <select id="Sanduiches" class="form-control select-custom">
-                                <option value="Sanduiche Natural">Sanduíche Natural</option>
-                                <option value="Pao c/ Linguica">Pão c/ Linguiça</option>
-                                <option value="Misto Quente">Misto Quente</option>
-                                <option value="Misto c/ Ovo">Misto c/ Ovo</option>
-                                <option value="Misto c/ Queijo e Peito de Peru">Misto c/ Queijo e Peito de Peru</option>
-                                <option value="Pao c/ Ovo, Bacon e Queijo Coalho">Pão c/ Ovo, Bacon e Queijo Coalho</option>
-                                <option value="Pao c/ Ovo e Bacon">Pão c/ Ovo e Bacon</option>
-                                <option value="Fielzao">Fielzão</option>
+                            <select id="selectSanduiches" class="form-control select-custom">
+                                <option value="Sanduiche Natural">Sanduíche Natural - R$ 12,00</option>
+                                <option value="Pao c/ Linguica">Pão c/ Linguiça - R$ 17,00</option>
+                                <option value="Misto Quente">Misto Quente - R$ 6,00</option>
+                                <option value="Misto c/ Ovo">Misto c/ Ovo - R$ 10,00</option>
+                                <option value="Misto c/ Queijo e Peito de Peru">Misto c/ Queijo e Peito de Peru - R$ 8,00</option>
+                                <option value="Pao c/ Ovo, Bacon e Queijo Coalho">Pão c/ Ovo, Bacon e Queijo Coalho - R$ 12,00</option>
+                                <option value="Pao c/ Ovo e Bacon">Pão c/ Ovo e Bacon - R$ 9,00</option>
+                                <option value="Fielzao">Fielzão - R$ 12,00</option>
                             </select>
                         </div>
+
+                        <!-- Área de Adicionais para Sanduíches -->
+                        <div class="adicionais-wrapper" id="adicionaisSanduiche">
+                            <p class="adicionais-titulo">Turbine seu sanduíche:</p>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Queijo" data-price="4.00"> Queijo (+ R$ 4,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Ovo" data-price="2.00"> Ovo (+ R$ 2,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Bacon" data-price="4.00"> Bacon (+ R$ 4,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Cheddar" data-price="3.00"> Cheddar (+ R$ 3,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Calabresa" data-price="4.00"> Calabresa (+ R$ 4,00)</label>
+                        </div>
+
                         <div class="produto-footer">
-                            <span class="produto-price" id="priceDisplay-sanduiches">R$ 10,00</span>
-                            <button class="btn-add" onclick="adicionarComSelect('Sanduiches')">
+                            <button class="btn-add" onclick="adicionarComAdicionais('selectSanduiches', 'adicionaisSanduiche')">
                                 <i class="fas fa-shopping-cart"></i> Adicionar
                             </button>
                         </div>
@@ -206,9 +217,9 @@
                                     <option value="Tapioca Carne Seca c/ Queijo">Carne Seca c/ Queijo - R$ 20,00</option>
                                     <option value="Tapioca Carne Seca c/ Catupiry">Carne Seca c/ Catupiry - R$ 20,00</option>
                                     <option value="Tapioca Carne Seca c/ Cheddar">Carne Seca c/ Cheddar - R$ 20,00</option>
-                                    <option value="Tapioca Carne Seca c/ Requeijao">Carne Seca c/ Requeijão - R$ 22,00 </option>
+                                    <option value="Tapioca Carne Seca c/ Requeijao">Carne Seca c/ Requeijão - R$ 22,00</option>
                                     <option value="Tapioca Frango c/ Queijo">Frango c/ Queijo - R$ 18,00</option>
-                                    <option value="Tapioca Frango c/ Cheddar">Frango c/ Cheddar- R$ 18,00</option>
+                                    <option value="Tapioca Frango c/ Cheddar">Frango c/ Cheddar - R$ 18,00</option>
                                     <option value="Tapioca Frango c/ Catupiry">Frango c/ Catupiry - R$ 18,00</option>
                                     <option value="Tapioca Frango c/ Requeijao">Frango c/ Requeijão - R$ 20,00</option>
                                     <option value="Tapioca Calabresa c/ Queijo">Calabresa c/ Queijo - R$ 16,00</option>
@@ -228,10 +239,19 @@
                             </select>
                         </div>
 
+                        <!-- Área de Adicionais para Tapiocas -->
+                        <div class="adicionais-wrapper" id="adicionaisTapioca">
+                            <p class="adicionais-titulo">Turbine sua tapioca:</p>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Queijo" data-price="4.00"> Queijo (+ R$ 4,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Ovo" data-price="2.00"> Ovo (+ R$ 2,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Bacon" data-price="4.00"> Bacon (+ R$ 4,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Requeijão" data-price="4.00"> Requeijão (+ R$ 4,00)</label>
+                            <label class="adicional-item"><input type="checkbox" value="Adicional Catupiry" data-price="3.00"> Catupiry (+ R$ 3,00)</label>
+                        </div>
+
                         <div class="produto-footer">
-                            <span class="produto-price" id="priceDisplay-tapioca">R$ 20,00</span>
-                            <button class="btn-add" onclick="addTapiocaComSabor()">
-                                <i class="fas fa-plus"></i> Adicionar
+                            <button class="btn-add" onclick="adicionarComAdicionais('saborTapioca', 'adicionaisTapioca')">
+                                <i class="fas fa-shopping-cart"></i> Adicionar
                             </button>
                         </div>
                     </div>
@@ -240,54 +260,6 @@
         </div>
     </section>
 
-    <script>
-        // Script auxiliar para atualizar o preço visual e adicionar o sabor correto
-        document.getElementById('saborTapioca').addEventListener('change', function() {
-            const precos = {
-                'Tapioca Carne Seca c/ Queijo': 'R$ 20,00',
-                'Tapioca Carne Seca c/ Catupiry': 'R$ 20,00',
-                'Tapioca Carne Seca c/ Cheddar': 'R$ 20,00',
-                'Tapioca Carne Seca c/ Requeijao': 'R$ 22,00',
-                'Tapioca Frango c/ Queijo': 'R$ 18,00',
-                'Tapioca Frango c/ Cheddar': 'R$ 18,00',
-                'Tapioca Frango c/ Catupiry': 'R$ 18,00',
-                'Tapioca Frango c/ Requeijao': 'R$ 20,00',
-                'Tapioca Calabresa c/ Queijo': 'R$ 16,00',
-                'Tapioca Calabresa c/ Cheddar': 'R$ 16,00',
-                'Tapioca Queijo c/ Presunto': 'R$ 16,00',
-                'Tapioca Queijo Branco c/ Peito de Peru': 'R$ 16,00',
-                'Tapioca Queijo c/ Presunto, Calabresa e Cheddar': 'R$ 16,00',
-                'Tapioca Bacon c/ Ovos e Queijo': 'R$ 18,00',
-                'Tapioca Bacon c/ Queijo e Requeijao': 'R$ 18,00',
-                'Tapioca Coco c/ Leite Condensado': 'R$ 16,00',
-                'Tapioca Nutella': 'R$ 16,00',
-                'Tapioca Nutella c/ Oreo': 'R$ 17,00',
-                'Tapioca Romeu e Julieta': 'R$ 16,00'
-            };
-            document.getElementById('priceDisplay-tapioca').innerText = precos[this.value];
-        });
-
-        // Script para atualizar o preço dos Sanduíches
-        document.getElementById('Sanduiches').addEventListener('change', function() {
-            const precosSanduiches = {
-                'Sanduiche Natural': 'R$ 10,00',
-                'Pao c/ Linguica': 'R$ 12,00',
-                'Misto Quente': 'R$ 8,00',
-                'Misto c/ Ovo': 'R$ 10,00',
-                'Misto c/ Queijo e Peito de Peru': 'R$ 12,00',
-                'Pao c/ Ovo, Bacon e Queijo Coalho': 'R$ 15,00',
-                'Pao c/ Ovo e Bacon': 'R$ 12,00',
-                'Fielzao': 'R$ 18,00'
-            };
-            document.getElementById('priceDisplay-sanduiches').innerText = precosSanduiches[this.value];
-        });
-
-        function addTapiocaComSabor() {
-            const sabor = document.getElementById('saborTapioca').value;
-            addToCart(sabor);
-        }
-        </script>
-        
     <!-- Sobre Section -->
     <section id="sobre" class="sobre">
         <div class="container">
@@ -393,8 +365,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <i class="fas fa-lemon"></i>
-                        <span>Negão do Suco</span>
+                        <span>Negão do Sucôoooo</span>
                     </div>
                     <p>Sucos naturais e saudáveis para transformar o seu dia!</p>
                     <div class="social-links">

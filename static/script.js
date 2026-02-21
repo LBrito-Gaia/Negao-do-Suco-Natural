@@ -12,13 +12,13 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Mobile menu toggle
+// Alternar menu móvel(Mobile menu toggle)
 hamburger.addEventListener('click', () => {
     navMenu.classList.toggle('active');
     hamburger.classList.toggle('active');
 });
 
-// Close mobile menu when clicking on a link
+// Fechar menu móvel ao clicar em um link(Close mobile menu when clicking on a link)
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
         navMenu.classList.remove('active');
@@ -267,7 +267,7 @@ if ('ontouchstart' in window) {
 }
 
 // Console welcome message
-console.log('%c🍋 Negão do Suco Natural', 'font-size: 20px; font-weight: bold; color: #FF6B35;');
+console.log('%cNegão do Suco Natural', 'font-size: 20px; font-weight: bold; color: #FF6B35;');
 console.log('%cSite desenvolvido com ❤️', 'font-size: 12px; color: #666;');
 
 // Performance optimization - debounce scroll events

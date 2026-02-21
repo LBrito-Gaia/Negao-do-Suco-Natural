@@ -5,12 +5,7 @@ const deliverySystem = {
     orderData: {},
     
     products: {
-        'Verde Detox': { price: 10.00, color: 'linear-gradient(135deg, #A8E6CF 0%, #4ECDC4 100%)', icon: 'fa-seedling' },
-        'Limonada Suíça': { price: 9.00, color: 'linear-gradient(135deg, #FFD93D 0%, #F9A826 100%)', icon: 'fa-lemon' },
-        'Morango': { price: 11.00, color: 'linear-gradient(135deg, #FF6B9D 0%, #C44569 100%)', icon: 'fa-heart' },
-        'Manga': { price: 9.50, color: 'linear-gradient(135deg, #FFA07A 0%, #FF7F50 100%)', icon: 'fa-sun' },
         'Salada de frutas': { price: 12.00, color: 'linear-gradient(135deg, #98D8C8 0%, #6BCF7F 100%)', icon: 'fa-glass-whiskey' },
-        'Açaí': { price: 12.00, color: 'linear-gradient(135deg, #A78BFA 0%, #7C3AED 100%)', icon: 'fa-grape' },
         'Tapioca Carne Seca c/ Queijo': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
         'Tapioca Carne Seca c/ Catupiry': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
         'Tapioca Carne Seca c/ Cheddar': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
@@ -44,18 +39,26 @@ const deliverySystem = {
         'Suco Laranja c/ Couve e Hortela':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
         'Suco Laranja c/ Morango':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
         'Suco Maracuja c/ Morango':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Sanduiche Natural': { price: 10.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Pao c/ Linguica': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Misto Quente': { price: 8.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
+        'Sanduiche Natural': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
+        'Pao c/ Linguica': { price: 17.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
+        'Misto Quente': { price: 6.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
         'Misto c/ Ovo': { price: 10.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Misto c/ Queijo e Peito de Peru': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Pao c/ Ovo, Bacon e Queijo Coalho': { price: 15.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Pao c/ Ovo e Bacon': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Fielzao': { price: 18.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
+        'Misto c/ Queijo e Peito de Peru': { price: 8.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
+        'Pao c/ Ovo, Bacon e Queijo Coalho': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
+        'Pao c/ Ovo e Bacon': { price: 9.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
+        'Fielzao': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
         'Vitamina Morango': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' },
         'Vitamina Maracuja': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' },
         'Vitamina Banana c/ Aveia': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' },
         'Vitamina Abacate': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' }
+    ,
+        'Adicional Queijo': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
+        'Adicional Ovo': { price: 2.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
+        'Adicional Bacon': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
+        'Adicional Cheddar': { price: 3.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
+        'Adicional Requeijão': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
+        'Adicional Catupiry': { price: 3.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
+        'Adicional Calabresa': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' }
     },
 
     init() {
@@ -112,6 +115,30 @@ const deliverySystem = {
                 e.target.value = value;
             });
         }
+
+        // Prepara os atualizadores de preço para os cards com select
+        this.setupPriceUpdater('selectVitaminas', 'priceDisplay-vitaminas');
+        this.setupPriceUpdater('selectSucos', 'priceDisplay-sucos');
+    },
+
+    setupPriceUpdater(selectId, displayId) {
+        const selectElement = document.getElementById(selectId);
+        const displayElement = document.getElementById(displayId);
+
+        if (!selectElement || !displayElement) return;
+
+        const updatePrice = () => {
+            const selectedProduct = selectElement.value;
+            if (this.products[selectedProduct]) {
+                const price = this.products[selectedProduct].price;
+                // Formata para o padrão brasileiro (R$ 10,00)
+                displayElement.textContent = `R$ ${price.toFixed(2).replace('.', ',')}`;
+            }
+        };
+
+        selectElement.addEventListener('change', updatePrice);
+        // Força a atualização inicial do preço
+        updatePrice();
     },
 
     addToCart(productName) {
@@ -485,3 +512,72 @@ function adicionarComSelect(idDoCampo) {
 
 // Garante que o botão no HTML consiga "ver" essa função
 window.adicionarComSelect = adicionarComSelect;
+
+// NOVA FUNÇÃO: Adicionar item principal + Checkboxes de adicionais
+function adicionarComAdicionais(idSelect, idContainerAdicionais) {
+    const selectElement = document.getElementById(idSelect);
+    const containerAdicionais = document.getElementById(idContainerAdicionais);
+    
+    if (!selectElement || !containerAdicionais) return;
+
+    // 1. Pega o produto principal
+    const nomePrincipal = selectElement.value;
+    const produtoPrincipal = deliverySystem.products[nomePrincipal];
+
+    if (!produtoPrincipal) {
+        alert("Erro: Produto principal não encontrado.");
+        return;
+    }
+
+    let nomeFinal = nomePrincipal;
+    let precoFinal = produtoPrincipal.price;
+
+    // 2. Varre os checkboxes marcados
+    const checkboxes = containerAdicionais.querySelectorAll('input[type="checkbox"]:checked');
+    
+    checkboxes.forEach(checkbox => {
+        const nomeCompletoAdicional = checkbox.value; // Ex: "Adicional Queijo"
+        const nomeAdicional = nomeCompletoAdicional.replace('Adicional ', ''); // Ex: "Queijo"
+        
+        // Busca o preço no sistema central (delivery.js) para garantir consistência
+        let precoAdicional = 0;
+        if (deliverySystem.products[nomeCompletoAdicional]) {
+            precoAdicional = deliverySystem.products[nomeCompletoAdicional].price;
+        } else {
+            // Fallback: se não achar no sistema, pega do HTML
+            precoAdicional = parseFloat(checkbox.getAttribute('data-price'));
+        }
+
+        nomeFinal += ` + ${nomeAdicional}`;
+        precoFinal += precoAdicional;
+    });
+
+    // 3. Adiciona ao carrinho manualmente (Bypassing a função padrão para permitir nome composto)
+    // Verifica se esse combo exato já existe no carrinho
+    const existingItem = deliverySystem.cart.find(item => item.name === nomeFinal);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        deliverySystem.cart.push({
+            name: nomeFinal,
+            price: precoFinal,
+            quantity: 1,
+            color: produtoPrincipal.color, // Usa a cor/ícone do item principal
+            icon: produtoPrincipal.icon
+        });
+    }
+
+    // 4. Atualiza UI e Salva
+    deliverySystem.saveCart();
+    deliverySystem.updateCartUI();
+    
+    // Limpa os checkboxes para o próximo pedido
+    checkboxes.forEach(cb => cb.checked = false);
+
+    if (typeof showNotification === 'function') {
+        showNotification(`${nomePrincipal} adicionado com sucesso!`);
+    }
+}
+
+window.adicionarComAdicionais = adicionarComAdicionais;
