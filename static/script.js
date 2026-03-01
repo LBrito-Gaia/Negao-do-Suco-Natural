@@ -162,8 +162,8 @@ const statsObserver = new IntersectionObserver((entries) => {
                 const text = stat.textContent;
                 if (text.includes('%')) {
                     animateCounter(stat, 100);
-                } else if (text.includes('5000')) {
-                    animateCounter(stat, 5000);
+                } else if (text.includes('4040')) {
+                    animateCounter(stat, 4040);
                 } else if (text.includes('15')) {
                     animateCounter(stat, 15);
                 }
@@ -289,4 +289,3 @@ const debouncedScroll = debounce(() => {
 }, 10);
 
 window.addEventListener('scroll', debouncedScroll);
-

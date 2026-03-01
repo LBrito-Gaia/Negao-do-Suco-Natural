@@ -1,6 +1,6 @@
-__pycache__/
-*.py[cod]
-*$py.class
-.vscode/
-node_modules/
+# Arquivos de sistema operacional
+Thumbs.db
 .DS_Store
+
+# Logs e arquivos temporários
+*.log

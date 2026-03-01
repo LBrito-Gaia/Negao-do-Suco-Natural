@@ -1,69 +1,102 @@
 // Delivery System - Gerenciamento de Carrinho e Checkout (VERSÃO CORRIGIDA)
 const deliverySystem = {
     cart: [],
-    deliveryFee: 5.00,
+    deliveryFee: 0.00, // Será calculado dinamicamente
     orderData: {},
     
+    // CONFIGURAÇÃO DO FIREBASE (BANCO DE DADOS)
+    // Substitua os valores abaixo pelos que você pegou no Console do Firebase
+    firebaseConfig: {
+        apiKey: "AIzaSyBHAOUDG1l9t1qiRjBW5KcIxi6cAtvmk8g",
+        authDomain: "negaodosuconatural-aa2e0.firebaseapp.com",
+        databaseURL: "https://negaodosuconatural-aa2e0-default-rtdb.firebaseio.com",
+        projectId: "negaodosuconatural-aa2e0",
+        storageBucket: "negaodosuconatural-aa2e0.firebasestorage.app",
+        messagingSenderId: "43267784727",
+        appId: "1:43267784727:web:5a892a879fcd5f87685c52"
+    },
+
+    // Configurações da Loja (Lógica estilo CardapioWeb)
+    storeConfig: {
+        isOpen: true, 
+        forceClosed: false, // CONTROLE MANUAL: Mude para 'true' para fechar a loja imediatamente.
+        openingHours: {
+            start: 9, // 09:00
+            end: 19    // 19:00 (o sistema fecha às 19:00 em ponto)
+        },
+        // Taxas por bairro (Exemplo)
+        neighborhoodFees: {
+            'Centro': 5.00,
+            'Bairro A': 7.00,
+            'Bairro B': 10.00,
+            'Outros': 15.00
+        }
+    },
+
     products: {
-        'Salada de frutas': { price: 12.00, color: 'linear-gradient(135deg, #98D8C8 0%, #6BCF7F 100%)', icon: 'fa-glass-whiskey' },
-        'Tapioca Carne Seca c/ Queijo': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Carne Seca c/ Catupiry': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Carne Seca c/ Cheddar': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Carne Seca c/ Requeijao': { price: 22.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Frango c/ Queijo': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Frango c/ Cheddar': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Frango c/ Catupiry': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Frango c/ Requeijao': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Calabresa c/ Queijo': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Calabresa c/ Cheddar': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Queijo c/ Presunto': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Queijo Branco c/ Peito de Peru': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Queijo c/ Presunto, Calabresa e Cheddar': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Bacon c/ Ovos e Queijo': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Bacon c/ Queijo e Requeijao': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Coco c/ Leite Condensado': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Nutella': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Nutella c/ Oreo': { price: 17.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Tapioca Romeu e Julieta': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Laranja':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Maracuja':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Abacaxi':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Abacaxi c/ Hortela e Gengibre':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Goiaba':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Manga':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Melancia':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Limao':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Limao c/ Inhame':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Beterraba c/ Cenoura, Laranja, Limao e Gengibre':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Laranja c/ Acerola':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Laranja c/ Couve e Hortela':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Laranja c/ Morango':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Suco Maracuja c/ Morango':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils' },
-        'Sanduiche Natural': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Pao c/ Linguica': { price: 17.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Misto Quente': { price: 6.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Misto c/ Ovo': { price: 10.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Misto c/ Queijo e Peito de Peru': { price: 8.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Pao c/ Ovo, Bacon e Queijo Coalho': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Pao c/ Ovo e Bacon': { price: 9.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Fielzao': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger' },
-        'Vitamina Morango': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' },
-        'Vitamina Maracuja': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' },
-        'Vitamina Banana c/ Aveia': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' },
-        'Vitamina Abacate': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender' }
+        'Salada de frutas': { price: 12.00, color: 'linear-gradient(135deg, #98D8C8 0%, #6BCF7F 100%)', icon: 'fa-glass-whiskey', isAvailable: true },
+        'Tapioca Carne Seca com Queijo': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Carne Seca com Catupiry': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Carne Seca com Cheddar': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Carne Seca com Requeijao': { price: 22.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Frango com Queijo': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Frango com Cheddar': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Frango com Catupiry': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Frango com Requeijao': { price: 20.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Calabresa com Queijo': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Calabresa com Cheddar': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Queijo com Presunto': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Queijo Branco com Peito de Peru': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Queijo com Presunto, Calabresa e Cheddar': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Bacon com Ovos e Queijo': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Bacon com Queijo e Requeijao': { price: 18.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Coco com Leite Condensado': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Nutella': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Nutella com Oreo': { price: 17.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Tapioca Romeu e Julieta': { price: 16.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Laranja':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Maracuja':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Abacaxi':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Abacaxi com Hortela e Gengibre':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Goiaba':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Manga':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Melancia':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Limao':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Limao com Inhame':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Beterraba com Cenoura, Laranja, Limao e Gengibre':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Laranja com Acerola':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Laranja com Couve e Hortela':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Laranja com Morango':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Suco Maracuja com Morango':{price: 8.00, color: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', icon: 'fa-utensils', isAvailable: true },
+        'Sanduiche Natural': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Pao com Linguica': { price: 17.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Misto Quente': { price: 6.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Misto com Ovo': { price: 10.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Misto com Queijo e Peito de Peru': { price: 8.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Pao com Ovo, Bacon e Queijo Coalho': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Pao com Ovo e Bacon': { price: 9.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Fielzao': { price: 12.00, color: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', icon: 'fa-hamburger', isAvailable: true },
+        'Vitamina Morango': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender', isAvailable: true },
+        'Vitamina Maracuja': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender', isAvailable: true },
+        'Vitamina Banana com Aveia': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender', isAvailable: true },
+        'Vitamina Abacate': { price: 15.00, color: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%)', icon: 'fa-blender', isAvailable: true }
     ,
-        'Adicional Queijo': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
-        'Adicional Ovo': { price: 2.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
-        'Adicional Bacon': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
-        'Adicional Cheddar': { price: 3.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
-        'Adicional Requeijão': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
-        'Adicional Catupiry': { price: 3.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' },
-        'Adicional Calabresa': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle' }
+        'Adicional Queijo': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle', isAvailable: true },
+        'Adicional Ovo': { price: 2.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle', isAvailable: true },
+        'Adicional Bacon': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle', isAvailable: true },
+        'Adicional Cheddar': { price: 3.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle', isAvailable: true },
+        'Adicional Requeijão': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle', isAvailable: true },
+        'Adicional Catupiry': { price: 3.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle', isAvailable: true },
+        'Adicional Calabresa': { price: 4.00, color: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)', icon: 'fa-plus-circle', isAvailable: true }
     },
 
     init() {
         this.loadCart();
         this.setupEventListeners();
+        this.setupFirebase(); // Conecta ao banco de dados
+        this.setupAdminSecret(); // Inicia o "escuta" do menu secreto
+        this.checkOpeningHours(); // Verifica se está aberto ao carregar
+        this.updateProductAvailabilityUI();
         this.updateCartUI();
     },
 
@@ -141,18 +174,339 @@ const deliverySystem = {
         updatePrice();
     },
 
+    // --- CONEXÃO COM FIREBASE ---
+    setupFirebase() {
+        // Verifica se o Firebase foi carregado no HTML
+        if (typeof firebase === 'undefined') {
+            console.error("Firebase SDK não encontrado! Adicione os scripts no HTML.");
+            return;
+        }
+
+        // Inicializa o Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(this.firebaseConfig);
+        }
+        
+        this.db = firebase.database();
+
+        // 1. OUVINTE: Status da Loja (Aberto/Fechado)
+        // Sempre que mudar no banco, atualiza aqui automaticamente
+        this.db.ref('config/forceClosed').on('value', (snapshot) => {
+            const isClosed = snapshot.val();
+            // Se for null (primeira vez), assume false
+            this.storeConfig.forceClosed = isClosed === true; 
+            this.checkOpeningHours();
+            
+            // Se o painel admin estiver aberto, atualiza ele visualmente
+            if (document.getElementById('adminPanel')) {
+                this.openAdminPanel();
+            }
+        });
+
+        // 2. OUVINTE: Estoque de Produtos
+        this.db.ref('estoque').on('value', (snapshot) => {
+            const estoqueRemoto = snapshot.val() || {};
+            
+            // Atualiza o status local de cada produto
+            for (const productName in this.products) {
+                // Se o produto existe no banco, usa o valor do banco. 
+                // Se não existe (novo produto), assume true (disponível).
+                if (estoqueRemoto.hasOwnProperty(productName)) {
+                    this.products[productName].isAvailable = estoqueRemoto[productName];
+                }
+            }
+            
+            this.updateProductAvailabilityUI();
+            
+            // Se o painel admin estiver aberto, atualiza a lista
+            if (document.getElementById('adminPanel')) {
+                this.openAdminPanel();
+            }
+        });
+    },
+
+    updateProductAvailabilityUI() {
+        // PASSO 1: Atualiza cada item individualmente (Botões, Opções de Select e Checkboxes)
+        for (const productName in this.products) {
+            const product = this.products[productName];
+            const isAvailable = product.isAvailable;
+            
+            // Seleciona botões e opções relacionados a este produto
+            const simpleButtons = document.querySelectorAll(`button[onclick="addToCart('${productName}')"], button[onclick="window.addToCart('${productName}')"]`);
+            const options = document.querySelectorAll(`option[value="${productName}"]`);
+            const checkboxes = document.querySelectorAll(`input[type="checkbox"][value="${productName}"]`);
+
+            // Atualiza Botões Simples (Ex: Salada de Frutas)
+            simpleButtons.forEach(button => {
+                const card = button.closest('.produto-card');
+                if (!isAvailable) {
+                    if (card) card.classList.add('produto-esgotado');
+                    button.disabled = true;
+                    button.innerHTML = '<i class="fas fa-times-circle"></i> Esgotado';
+                } else {
+                    if (card) card.classList.remove('produto-esgotado');
+                    button.disabled = false;
+                    button.innerHTML = '<i class="fas fa-shopping-cart"></i> Adicionar';
+                }
+            });
+            
+            // Atualiza Opções dentro de Listas (Ex: Sucos, Tapiocas)
+            options.forEach(option => {
+                // Salva o texto original (com preço e formatação) na primeira vez
+                if (!option.getAttribute('data-original-text')) {
+                    option.setAttribute('data-original-text', option.textContent);
+                }
+                const originalText = option.getAttribute('data-original-text');
+
+                option.disabled = !isAvailable;
+                option.textContent = isAvailable ? originalText : `${originalText} (Esgotado)`;
+            });
+
+            // Atualiza Checkboxes (Adicionais)
+            checkboxes.forEach(checkbox => {
+                checkbox.disabled = !isAvailable;
+                const label = checkbox.closest('label');
+                if (label) {
+                    if (!isAvailable) {
+                        label.style.textDecoration = 'line-through';
+                        label.style.color = '#999';
+                        label.title = "Item esgotado";
+                        checkbox.checked = false; // Desmarca se estiver esgotado
+                    } else {
+                        label.style.textDecoration = 'none';
+                        label.style.color = '';
+                        label.title = "";
+                    }
+                }
+            });
+        }
+
+        // PASSO 2: Verifica os Selects (Se TODOS os itens do select estiverem esgotados, bloqueia o card inteiro)
+        const allSelects = document.querySelectorAll('select');
+        allSelects.forEach(select => {
+            const options = Array.from(select.querySelectorAll('option'));
+            if (options.length === 0) return;
+
+            // Verifica se todas as opções estão desabilitadas
+            const allDisabled = options.every(opt => opt.disabled);
+            const card = select.closest('.produto-card');
+            const btnAdd = card ? card.querySelector('.btn-add') : null;
+
+            if (allDisabled && card && btnAdd) {
+                card.classList.add('produto-esgotado');
+                btnAdd.disabled = true;
+                btnAdd.innerHTML = '<i class="fas fa-times-circle"></i> Esgotado';
+            } else if (!allDisabled && card && btnAdd) {
+                // Se tiver pelo menos um disponível, libera o card
+                card.classList.remove('produto-esgotado');
+                btnAdd.disabled = false;
+                btnAdd.innerHTML = '<i class="fas fa-shopping-cart"></i> Adicionar';
+            }
+        });
+    },
+
+    // --- ÁREA DO FUNCIONÁRIO (MENU SECRETO) ---
+    setupAdminSecret() {
+        const logo = document.querySelector('.logo'); // O elemento que receberá os cliques secretos
+        if (!logo) return;
+
+        let clickCount = 0;
+        let clickTimer = null;
+
+        logo.addEventListener('click', (e) => {
+            // Conta os cliques
+            clickCount++;
+            
+            if (clickTimer) clearTimeout(clickTimer);
+            
+            // Reseta a contagem se parar de clicar por 2 segundos
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 2000);
+
+            // Se atingir 5 cliques, pede a senha
+            if (clickCount === 5) {
+                const password = prompt("🔒 Acesso Restrito: Digite a senha de funcionário:");
+                if (password === "1234") { // DEFINA SUA SENHA AQUI
+                    this.openAdminPanel();
+                } else if (password !== null) {
+                    alert("Senha incorreta!");
+                }
+                clickCount = 0;
+            }
+        });
+    },
+
+    toggleProductAvailability(productName) {
+        const product = this.products[productName];
+        if (product) {
+            // Em vez de mudar localmente, enviamos para o Firebase
+            // O Firebase vai avisar a todos (inclusive nós mesmos) que mudou
+            const novoStatus = !product.isAvailable;
+            this.db.ref('estoque/' + productName).set(novoStatus);
+            // Não precisamos chamar updateUI aqui, o ouvinte .on('value') fará isso
+        }
+    },
+
+    openAdminPanel() {
+        // Remove painel se já existir (para não duplicar)
+        const existingPanel = document.getElementById('adminPanel');
+        if (existingPanel) existingPanel.remove();
+
+        // Cria o painel visualmente
+        const panel = document.createElement('div');
+        panel.id = 'adminPanel';
+        panel.style.cssText = `
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 25px; border-radius: 15px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6); z-index: 9999;
+            width: 90%; max-width: 450px; display: flex; flex-direction: column; max-height: 80vh;
+        `;
+
+        const isClosed = this.storeConfig.forceClosed;
+        
+        // Lista de produtos para controle de estoque
+        let productListHTML = '';
+        for (const productName in this.products) {
+            const product = this.products[productName];
+            const available = product.isAvailable;
+            productListHTML += `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 0.8rem;">${available ? '🟢' : '🔴'}</span>
+                        <span style="color: #333; font-size: 0.9rem;">${productName}</span>
+                    </div>
+                    <button onclick="deliverySystem.toggleProductAvailability('${productName}')" style="padding: 5px 10px; border: none; border-radius: 5px; font-size: 0.8rem; cursor: pointer; color: white; background: ${available ? '#c0392b' : '#27ae60'};">
+                        ${available ? 'Esgotar' : 'Disponibilizar'}
+                    </button>
+                </div>
+            `;
+        }
+
+        panel.innerHTML = `
+            <div style="text-align: center; padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+                <h3 style="margin: 0 0 10px 0; color: #333;">Painel de Controle</h3>
+                <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: #27ae60;">☁️ Conectado ao Banco de Dados</p>
+                <button id="btnToggleStore" style="padding: 10px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: ${isClosed ? '#27ae60' : '#c0392b'};">
+                    ${isClosed ? 'LOJA FECHADA (CLIQUE PARA ABRIR)' : 'LOJA ABERTA (CLIQUE PARA FECHAR)'}
+                </button>
+            </div>
+            <h4 style="margin: 15px 0 10px 0; color: #333; text-align: center;">Controle de Estoque</h4>
+            <div style="overflow-y: auto; flex: 1; border: 1px solid #eee; border-radius: 8px; padding: 5px;">${productListHTML}</div>
+            <button onclick="document.getElementById('adminPanel').remove()" style="margin-top: 15px; padding: 8px; width: 100%; border: 1px solid #ccc; background: transparent; border-radius: 8px; cursor: pointer;">Fechar Painel</button>
+        `;
+
+        document.body.appendChild(panel);
+
+        // Lógica do botão
+        document.getElementById('btnToggleStore').addEventListener('click', () => {
+            // Envia para o Firebase
+            const novoStatus = !this.storeConfig.forceClosed;
+            this.db.ref('config/forceClosed').set(novoStatus);
+            alert(`Comando enviado! A loja será ${novoStatus ? 'FECHADA' : 'ABERTA'} para todos.`);
+        });
+    },
+
+    // Função para verificar horário de funcionamento
+    checkOpeningHours() {
+        // Prioridade 1: Verifica se a loja foi forçada a fechar manualmente.
+        if (this.storeConfig.forceClosed) {
+            this.storeConfig.isOpen = false;
+        } else {
+            // Prioridade 2: Lógica de horário normal
+            const now = new Date();
+            const currentHour = now.getHours();
+            const { start, end } = this.storeConfig.openingHours;
+            
+            if (currentHour >= start && currentHour < end) {
+                this.storeConfig.isOpen = true;
+            } else {
+                this.storeConfig.isOpen = false;
+            }
+        }
+        
+        // Atualiza o Banner Visual no Site
+        this.updateStoreStatusUI();
+    },
+
+    // Nova Função: Mostra Banner de Loja Fechada (Estilo Letreiro/Marca d'água)
+    updateStoreStatusUI() {
+        let banner = document.getElementById('store-status-banner');
+        
+        // Cria o banner se não existir
+        if (!banner) {
+            banner = document.createElement('div');
+            banner.id = 'store-status-banner';
+            
+            // Estilo Letreiro (Marquee) no Topo
+            // pointer-events: none -> Permite clicar no logo/menu que está "atrás" do banner
+            banner.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%;
+                height: 35px;
+                background: rgba(8, 65, 44, 0.4); /* Verde da marca (padrão do site) com transparência */
+                color: white; 
+                z-index: 9999; /* Fica acima do menu */
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+                display: none;
+                overflow: hidden;
+                white-space: nowrap;
+                pointer-events: none; /* O SEGREDO: Permite clicar através do banner */
+                backdrop-filter: blur(2px);
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                font-size: 0.9rem;
+                line-height: 35px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            `;
+            
+            // Adiciona a animação CSS na página
+            if (!document.getElementById('marquee-style')) {
+                const style = document.createElement('style');
+                style.id = 'marquee-style';
+                style.innerHTML = `
+                    @keyframes marquee {
+                        from { transform: translateX(100vw); }
+                        to { transform: translateX(-100%); }
+                    }
+                    .marquee-content {
+                        display: inline-block;
+                        animation: marquee 20s linear infinite;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            banner.innerHTML = '<div class="marquee-content" id="marquee-text"></div>';
+            document.body.appendChild(banner);
+        }
+
+        const marqueeText = banner.querySelector('#marquee-text');
+
+        if (!this.storeConfig.isOpen) {
+            banner.style.display = 'block';
+            const motivo = this.storeConfig.forceClosed ? "FECHADO TEMPORARIAMENTE" : "LOJA FECHADA";
+            const horario = `${this.storeConfig.openingHours.start}:00 às ${this.storeConfig.openingHours.end}:00`;
+            
+            // Texto do letreiro
+            marqueeText.textContent = `🚨 ${motivo} • HORÁRIO: ${horario} • NÃO ESTAMOS RECEBENDO PEDIDOS NO MOMENTO 🚨`;
+        } else {
+            banner.style.display = 'none';
+        }
+    },
+
     addToCart(productName) {
+        const product = this.products[productName];
+        if (!product || !product.isAvailable) {
+            alert(`Desculpe, ${productName} está esgotado no momento.`);
+            return;
+        }
+
         const existingItem = this.cart.find(item => item.name === productName);
         
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
-            const product = this.products[productName];
-            if (!product) {
-                console.error(`Produto não encontrado: ${productName}. Verifique se o nome no HTML é igual ao do delivery.js`);
-                alert("Erro ao adicionar produto. Tente novamente.");
-                return;
-            }
             this.cart.push({
                 name: productName,
                 price: product.price,
@@ -286,6 +640,18 @@ function goToCheckout() {
         if (typeof showNotification === 'function') showNotification('Seu carrinho está vazio!');
         return;
     }
+
+    // Trava de Horário (Estilo CardapioWeb)
+    deliverySystem.checkOpeningHours();
+    if (!deliverySystem.storeConfig.isOpen) {
+        // Mensagem personalizada se estiver fechado manualmente ou por horário
+        const alertMessage = deliverySystem.storeConfig.forceClosed
+            ? "No momento, estamos fechados para recebimento de novos pedidos. Voltaremos em breve!"
+            : `Estamos fechados no momento! Nosso horário de funcionamento é das ${deliverySystem.storeConfig.openingHours.start}:00 às ${deliverySystem.storeConfig.openingHours.end}:00.`;
+        
+        alert(alertMessage);
+        return;
+    }
     
     deliverySystem.closeCart();
     const checkoutModal = document.getElementById('checkoutModal');
@@ -310,7 +676,24 @@ function nextStep(stepNumber) {
             return;
         }
         
-        const formData = new FormData(form);
+        const formData = new FormData(form);        
+        // Normaliza o texto digitado pelo cliente para um formato padrão
+        const bairroDigitado = formData.get('bairro');
+        const bairroNormalizado = bairroDigitado
+            .trim() // 1. Remove espaços extras no início e no fim
+            .toLowerCase() // 2. Converte tudo para minúsculo
+            .replace(/\b\w/g, char => char.toUpperCase()); // 3. Converte a primeira letra de cada palavra para maiúsculo
+        
+        // Cálculo dinâmico da taxa
+        let taxaCalculada = deliverySystem.storeConfig.neighborhoodFees['Outros'];
+        
+        // A comparação agora é feita com o texto tratado, tornando-a mais inteligente
+        if (deliverySystem.storeConfig.neighborhoodFees[bairroNormalizado]) {
+            taxaCalculada = deliverySystem.storeConfig.neighborhoodFees[bairroNormalizado];
+        }
+
+        deliverySystem.deliveryFee = taxaCalculada;
+
         deliverySystem.orderData.delivery = {
             nome: formData.get('nome'),
             telefone: formData.get('telefone'),
@@ -319,7 +702,7 @@ function nextStep(stepNumber) {
             endereco: formData.get('endereco'),
             numero: formData.get('numero'),
             complemento: formData.get('complemento'),
-            bairro: formData.get('bairro'),
+            bairro: bairroNormalizado, // Salva o nome do bairro já corrigido
             referencia: formData.get('referencia')
         };
     }
@@ -465,6 +848,23 @@ function confirmOrder() {
     const whatsappUrl = `https://wa.me/5521974440502?text=${message}`;
     window.open(whatsappUrl, '_blank');
     
+    // --- SALVAR NO BANCO DE DADOS (HISTÓRICO DE VENDAS) ---
+    if (deliverySystem.db) {
+        const novoPedido = {
+            data: new Date().toLocaleString('pt-BR'),
+            timestamp: Date.now(), // Útil para ordenar do mais recente para o mais antigo
+            cliente: delivery,     // Salva nome, endereço, telefone, bairro...
+            itens: items,          // Salva a lista de produtos comprados
+            pagamento: payment,    // Salva forma de pagamento e troco
+            valores: {
+                subtotal: subtotal,
+                taxaEntrega: deliverySystem.deliveryFee,
+                total: total
+            }
+        };
+        deliverySystem.db.ref('pedidos').push(novoPedido);
+    }
+
     setTimeout(() => {
         closeCheckout();
         deliverySystem.clearCart();
@@ -524,8 +924,8 @@ function adicionarComAdicionais(idSelect, idContainerAdicionais) {
     const nomePrincipal = selectElement.value;
     const produtoPrincipal = deliverySystem.products[nomePrincipal];
 
-    if (!produtoPrincipal) {
-        alert("Erro: Produto principal não encontrado.");
+    if (!produtoPrincipal || !produtoPrincipal.isAvailable) {
+        alert(`Desculpe, ${nomePrincipal} está esgotado no momento.`);
         return;
     }
 
@@ -535,8 +935,15 @@ function adicionarComAdicionais(idSelect, idContainerAdicionais) {
     // 2. Varre os checkboxes marcados
     const checkboxes = containerAdicionais.querySelectorAll('input[type="checkbox"]:checked');
     
-    checkboxes.forEach(checkbox => {
+    for (const checkbox of checkboxes) {
         const nomeCompletoAdicional = checkbox.value; // Ex: "Adicional Queijo"
+        
+        // Verificação de Segurança: O adicional está disponível?
+        if (deliverySystem.products[nomeCompletoAdicional] && !deliverySystem.products[nomeCompletoAdicional].isAvailable) {
+            alert(`O item ${nomeCompletoAdicional} acabou de esgotar. Por favor, desmarque-o.`);
+            return; // Interrompe o processo de forma limpa
+        }
+
         const nomeAdicional = nomeCompletoAdicional.replace('Adicional ', ''); // Ex: "Queijo"
         
         // Busca o preço no sistema central (delivery.js) para garantir consistência
@@ -550,7 +957,7 @@ function adicionarComAdicionais(idSelect, idContainerAdicionais) {
 
         nomeFinal += ` + ${nomeAdicional}`;
         precoFinal += precoAdicional;
-    });
+    }
 
     // 3. Adiciona ao carrinho manualmente (Bypassing a função padrão para permitir nome composto)
     // Verifica se esse combo exato já existe no carrinho
