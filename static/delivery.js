@@ -447,7 +447,6 @@ const deliverySystem = {
                 this.startWebPrinterListener();
                 document.getElementById('btnToggleWebPrinter').textContent = "MONITORANDO PEDIDOS (ATIVO)";
                 document.getElementById('btnToggleWebPrinter').style.background = "#27ae60";
-                alert("✅ Impressão Automática Ativada!\n\nMantenha esta aba do navegador aberta. Novos pedidos serão impressos automaticamente.");
                 alert("✅ Impressão Automática Ativada!\n\n⚠️ IMPORTANTE: Mantenha esta aba do navegador aberta para que os pedidos sejam impressos.");
             } else {
                 window.webPrinterActive = false;
