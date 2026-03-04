@@ -20,6 +20,7 @@ const deliverySystem = {
     storeConfig: {
         isOpen: true, 
         forceClosed: false, // CONTROLE MANUAL: Mude para 'true' para fechar a loja imediatamente.
+        printerActive: true, // CONTROLE DA IMPRESSORA
         openingHours: {
             start: 9, // 09:00
             end: 19    // 19:00 (o sistema fecha às 19:00 em ponto)
@@ -203,6 +204,15 @@ const deliverySystem = {
             }
         });
 
+        // 3. OUVINTE: Status da Impressora
+        this.db.ref('config/impressoraAtiva').on('value', (snapshot) => {
+            this.storeConfig.printerActive = snapshot.val() === true;
+            // Se o painel admin estiver aberto, atualiza ele visualmente
+            if (document.getElementById('adminPanel')) {
+                this.openAdminPanel();
+            }
+        });
+
         // 2. OUVINTE: Estoque de Produtos
         this.db.ref('estoque').on('value', (snapshot) => {
             const estoqueRemoto = snapshot.val() || {};
@@ -364,6 +374,9 @@ const deliverySystem = {
         `;
 
         const isClosed = this.storeConfig.forceClosed;
+        const isPrinterOn = this.storeConfig.printerActive;
+        // Variável local para controlar a impressão via navegador
+        const isWebPrinterActive = window.webPrinterActive || false;
         
         // Lista de produtos para controle de estoque
         let productListHTML = '';
@@ -390,6 +403,12 @@ const deliverySystem = {
                 <button id="btnToggleStore" style="padding: 10px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: ${isClosed ? '#27ae60' : '#c0392b'};">
                     ${isClosed ? 'LOJA FECHADA (CLIQUE PARA ABRIR)' : 'LOJA ABERTA (CLIQUE PARA FECHAR)'}
                 </button>
+                <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #eee;">
+                    <h4 style="margin: 0 0 5px 0; font-size: 0.9rem;">🖨️ Impressão Automática (Navegador)</h4>
+                    <button id="btnToggleWebPrinter" style="padding: 10px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: ${isWebPrinterActive ? '#27ae60' : '#7f8c8d'};">
+                        ${isWebPrinterActive ? 'MONITORANDO PEDIDOS (ATIVO)' : 'ATIVAR IMPRESSÃO'}
+                    </button>
+                </div>
             </div>
             <h4 style="margin: 15px 0 10px 0; color: #333; text-align: center;">Controle de Estoque</h4>
             <div style="overflow-y: auto; flex: 1; border: 1px solid #eee; border-radius: 8px; padding: 5px;">${productListHTML}</div>
@@ -405,6 +424,98 @@ const deliverySystem = {
             this.db.ref('config/forceClosed').set(novoStatus);
             alert(`Comando enviado! A loja será ${novoStatus ? 'FECHADA' : 'ABERTA'} para todos.`);
         });
+
+        document.getElementById('btnToggleWebPrinter').addEventListener('click', () => {
+            if (!window.webPrinterActive) {
+                this.startWebPrinterListener();
+                document.getElementById('btnToggleWebPrinter').textContent = "MONITORANDO PEDIDOS (ATIVO)";
+                document.getElementById('btnToggleWebPrinter').style.background = "#27ae60";
+                alert("✅ Impressão Automática Ativada!\n\nMantenha esta aba do navegador aberta. Novos pedidos serão impressos automaticamente.");
+            } else {
+                window.webPrinterActive = false;
+                document.getElementById('btnToggleWebPrinter').textContent = "ATIVAR IMPRESSÃO";
+                document.getElementById('btnToggleWebPrinter').style.background = "#7f8c8d";
+            }
+        });
+    },
+
+    // --- LÓGICA DE IMPRESSÃO WEB ---
+    startWebPrinterListener() {
+        if (window.webPrinterActive) return;
+        window.webPrinterActive = true;
+        const sessionStart = Date.now();
+
+        // Cria área de impressão oculta
+        if (!document.getElementById('printableArea')) {
+            const printDiv = document.createElement('div');
+            printDiv.id = 'printableArea';
+            document.body.appendChild(printDiv);
+            
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @media print {
+                    body * { visibility: hidden; }
+                    #printableArea, #printableArea * { visibility: visible; }
+                    #printableArea { position: absolute; left: 0; top: 0; width: 100%; }
+                    @page { margin: 0; size: auto; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Escuta novos pedidos
+        this.db.ref('pedidos').limitToLast(1).on('child_added', (snapshot) => {
+            if (!window.webPrinterActive) return;
+            const pedido = snapshot.val();
+            
+            // Verifica se é um pedido novo (feito após ativar o painel ou nos últimos 30s)
+            const isNew = (pedido.timestamp > sessionStart) || (Date.now() - pedido.timestamp < 30000);
+
+            if (isNew) {
+                this.printWebReceipt(pedido);
+            }
+        });
+    },
+
+    printWebReceipt(order) {
+        const area = document.getElementById('printableArea');
+        const cliente = order.cliente || {};
+        const itens = order.itens || [];
+        const valores = order.valores || {};
+        const pagamento = order.pagamento || {};
+
+        let html = `
+            <div style="font-family: 'Courier New', monospace; font-size: 12px; width: 280px; color: black;">
+                <div style="text-align: center; font-weight: bold; margin-bottom: 10px;">
+                    NEGÃO DO SUCO NATURAL<br>--------------------------------
+                </div>
+                <div>Data: ${order.data}</div>
+                <div>Cliente: ${cliente.nome || 'N/A'}</div>
+                <div>Tel: ${cliente.telefone || 'N/A'}</div>
+                <div>End: ${cliente.endereco}, ${cliente.numero}</div>
+                <div>Bairro: ${cliente.bairro}</div>
+                <div style="margin: 10px 0; border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 5px 0;">
+        `;
+
+        itens.forEach(item => {
+            html += `<div style="display: flex; justify-content: space-between;"><span>${item.quantity}x ${item.name}</span><span>R$ ${(item.price * item.quantity).toFixed(2)}</span></div>`;
+        });
+
+        html += `</div>
+                <div style="display: flex; justify-content: space-between;"><span>Subtotal:</span> <span>R$ ${valores.subtotal.toFixed(2)}</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Entrega:</span> <span>R$ ${valores.taxaEntrega.toFixed(2)}</span></div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 5px;"><span>TOTAL:</span> <span>R$ ${valores.total.toFixed(2)}</span></div>
+                <div style="margin-top: 10px;">Forma: ${pagamento.method.toUpperCase()}<br>`;
+
+        if (pagamento.method === 'dinheiro' && pagamento.needChange === 'sim') {
+            html += `Troco p/: R$ ${pagamento.changeValue.toFixed(2)}<br><strong>LEVAR TROCO: R$ ${pagamento.calculatedChange.toFixed(2)}</strong>`;
+        }
+
+        html += `</div><div style="text-align: center; margin-top: 20px;">--------------------------------<br>Fim do Pedido</div></div>`;
+
+        area.innerHTML = html;
+        // Pequeno delay para renderizar antes de imprimir
+        setTimeout(() => window.print(), 500);
     },
 
     // Função para verificar horário de funcionamento
