@@ -92,6 +92,8 @@ const deliverySystem = {
     },
 
     init() {
+        // Garante que o 'this' dentro do handleBeforeUnload se refira ao deliverySystem
+        this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
         this.loadCart();
         this.setupEventListeners();
         this.setupFirebase(); // Conecta ao banco de dados
@@ -361,16 +363,23 @@ const deliverySystem = {
     openAdminPanel() {
         // Remove painel se já existir (para não duplicar)
         const existingPanel = document.getElementById('adminPanel');
-        if (existingPanel) existingPanel.remove();
+        if (existingPanel) {
+            // Se já existe e está minimizado, restaura ele
+            if (existingPanel.getAttribute('data-minimized') === 'true') {
+                this.toggleAdminPanelSize();
+            }
+            return;
+        }
 
         // Cria o painel visualmente
         const panel = document.createElement('div');
         panel.id = 'adminPanel';
         panel.style.cssText = `
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; padding: 25px; border-radius: 15px;
+            background: white; padding: 0; border-radius: 15px;
             box-shadow: 0 0 40px rgba(0,0,0,0.6); z-index: 9999;
             width: 90%; max-width: 450px; display: flex; flex-direction: column; max-height: 80vh;
+            overflow: hidden; transition: all 0.3s ease;
         `;
 
         const isClosed = this.storeConfig.forceClosed;
@@ -397,22 +406,30 @@ const deliverySystem = {
         }
 
         panel.innerHTML = `
-            <div style="text-align: center; padding-bottom: 15px; border-bottom: 1px solid #ccc;">
-                <h3 style="margin: 0 0 10px 0; color: #333;">Painel de Controle</h3>
-                <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: #27ae60;">☁️ Conectado ao Banco de Dados</p>
-                <button id="btnToggleStore" style="padding: 10px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: ${isClosed ? '#27ae60' : '#c0392b'};">
-                    ${isClosed ? 'LOJA FECHADA (CLIQUE PARA ABRIR)' : 'LOJA ABERTA (CLIQUE PARA FECHAR)'}
-                </button>
-                <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #eee;">
-                    <h4 style="margin: 0 0 5px 0; font-size: 0.9rem;">🖨️ Impressão Automática (Navegador)</h4>
-                    <button id="btnToggleWebPrinter" style="padding: 10px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: ${isWebPrinterActive ? '#27ae60' : '#7f8c8d'};">
-                        ${isWebPrinterActive ? 'MONITORANDO PEDIDOS (ATIVO)' : 'ATIVAR IMPRESSÃO'}
-                    </button>
+            <div style="background: #f1f1f1; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd;">
+                <h3 style="margin: 0; color: #333; font-size: 1rem;">Painel de Controle</h3>
+                <div style="display: flex; gap: 10px;">
+                    <button id="btnMinMax" onclick="deliverySystem.toggleAdminPanelSize()" title="Minimizar" style="border: none; background: none; cursor: pointer; font-size: 1.2rem; font-weight: bold; color: #27ae60;">➖</button>
+                    <button onclick="document.getElementById('adminPanel').remove()" title="Fechar Totalmente" style="border: none; background: none; cursor: pointer; font-size: 1.2rem; font-weight: bold; color: #c0392b;">✖️</button>
                 </div>
             </div>
-            <h4 style="margin: 15px 0 10px 0; color: #333; text-align: center;">Controle de Estoque</h4>
-            <div style="overflow-y: auto; flex: 1; border: 1px solid #eee; border-radius: 8px; padding: 5px;">${productListHTML}</div>
-            <button onclick="document.getElementById('adminPanel').remove()" style="margin-top: 15px; padding: 8px; width: 100%; border: 1px solid #ccc; background: transparent; border-radius: 8px; cursor: pointer;">Fechar Painel</button>
+            
+            <div id="adminBody" style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; flex: 1; min-height: 0;">
+                <div style="text-align: center; padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+                    <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: #27ae60;">☁️ Conectado ao Banco de Dados</p>
+                    <button id="btnToggleStore" style="padding: 10px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: ${isClosed ? '#27ae60' : '#c0392b'};">
+                        ${isClosed ? 'LOJA FECHADA (CLIQUE PARA ABRIR)' : 'LOJA ABERTA (CLIQUE PARA FECHAR)'}
+                    </button>
+                    <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #eee;">
+                        <h4 style="margin: 0 0 5px 0; font-size: 0.9rem;">🖨️ Impressão Automática (Navegador)</h4>
+                        <button id="btnToggleWebPrinter" style="padding: 10px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: ${isWebPrinterActive ? '#27ae60' : '#7f8c8d'};">
+                            ${isWebPrinterActive ? 'MONITORANDO PEDIDOS (ATIVO)' : 'ATIVAR IMPRESSÃO'}
+                        </button>
+                    </div>
+                </div>
+                <h4 style="margin: 15px 0 10px 0; color: #333; text-align: center;">Controle de Estoque</h4>
+                <div style="overflow-y: auto; flex: 1; border: 1px solid #eee; border-radius: 8px; padding: 5px; min-height: 150px;">${productListHTML}</div>
+            </div>
         `;
 
         document.body.appendChild(panel);
@@ -431,12 +448,74 @@ const deliverySystem = {
                 document.getElementById('btnToggleWebPrinter').textContent = "MONITORANDO PEDIDOS (ATIVO)";
                 document.getElementById('btnToggleWebPrinter').style.background = "#27ae60";
                 alert("✅ Impressão Automática Ativada!\n\nMantenha esta aba do navegador aberta. Novos pedidos serão impressos automaticamente.");
+                alert("✅ Impressão Automática Ativada!\n\n⚠️ IMPORTANTE: Mantenha esta aba do navegador aberta para que os pedidos sejam impressos.");
             } else {
                 window.webPrinterActive = false;
+                // Remove o aviso de segurança ao desativar manualmente
+                window.removeEventListener('beforeunload', this.handleBeforeUnload);
                 document.getElementById('btnToggleWebPrinter').textContent = "ATIVAR IMPRESSÃO";
                 document.getElementById('btnToggleWebPrinter').style.background = "#7f8c8d";
+                alert("Impressão automática pausada.");
             }
         });
+    },
+
+    // --- FUNÇÃO DE MINIMIZAR/MAXIMIZAR ---
+    toggleAdminPanelSize() {
+        const panel = document.getElementById('adminPanel');
+        const body = document.getElementById('adminBody');
+        const btn = document.getElementById('btnMinMax');
+        
+        if (!panel || !body) return;
+
+        const isMinimized = panel.getAttribute('data-minimized') === 'true';
+
+        if (isMinimized) {
+            // MAXIMIZAR
+            panel.setAttribute('data-minimized', 'false');
+            body.style.display = 'flex';
+            
+            // Restaura estilos originais
+            panel.style.width = '90%';
+            panel.style.maxWidth = '450px';
+            panel.style.height = 'auto';
+            panel.style.maxHeight = '80vh';
+            panel.style.top = '50%';
+            panel.style.left = '50%';
+            panel.style.transform = 'translate(-50%, -50%)';
+            panel.style.borderRadius = '15px';
+            
+            btn.innerHTML = '➖';
+            btn.title = "Minimizar";
+        } else {
+            // MINIMIZAR
+            panel.setAttribute('data-minimized', 'true');
+            body.style.display = 'none';
+            
+            // Estilo minimizado (canto inferior direito)
+            panel.style.width = '250px';
+            panel.style.maxWidth = 'none';
+            panel.style.height = 'auto';
+            panel.style.top = 'auto';
+            panel.style.left = 'auto';
+            panel.style.bottom = '20px';
+            panel.style.right = '20px';
+            panel.style.transform = 'none';
+            panel.style.borderRadius = '10px';
+            
+            btn.innerHTML = '⬜'; // Ícone de maximizar
+            btn.title = "Maximizar";
+        }
+    },
+
+    // --- AVISO PARA NÃO FECHAR A JANELA ---
+    handleBeforeUnload(e) {
+        if (window.webPrinterActive) {
+            const message = "A impressão automática está ativa. Fechar esta página irá interromper a impressão de novos pedidos. Tem certeza que deseja sair?";
+            e.preventDefault(); // Necessário para a maioria dos navegadores
+            e.returnValue = message; // Para navegadores mais antigos
+            return message;
+        }
     },
 
     // --- LÓGICA DE IMPRESSÃO WEB ---
@@ -462,6 +541,9 @@ const deliverySystem = {
             `;
             document.head.appendChild(style);
         }
+
+        // Adiciona o "aviso de segurança" ao ativar a impressão
+        window.addEventListener('beforeunload', this.handleBeforeUnload);
 
         // Escuta novos pedidos
         this.db.ref('pedidos').limitToLast(1).on('child_added', (snapshot) => {
