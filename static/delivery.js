@@ -530,15 +530,17 @@ const deliverySystem = {
             document.body.appendChild(printDiv);
             
             const style = document.createElement('style');
+            style.id = 'print-style';
             style.innerHTML = `
                 @media print {
-                    body * { visibility: hidden; }
-                    #printableArea, #printableArea * { visibility: visible; }
-                    #printableArea { position: absolute; left: 0; top: 0; width: 100%; }
+                    body > *:not(#printableArea) { display: none !important; }
+                    #printableArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; }
                     @page { margin: 0; size: auto; }
                 }
             `;
-            document.head.appendChild(style);
+            if (!document.getElementById('print-style')) {
+                document.head.appendChild(style);
+            }
         }
 
         // Adiciona o "aviso de segurança" ao ativar a impressão
