@@ -14,9 +14,11 @@ Desenvolvimento de um site funcional e responsivo, focado na experiência do usu
 
 **Engenharia de Dados (Python):**
 Como o site ainda não possui tráfego real de clientes, utilizei o Python para "fabricar" um cenário de negócio:
-* **Extração (ETL):** Utilizei **Regex (Expressões Regulares)** para varrer os arquivos de configuração do site e extrair nomes e preços dos produtos de forma automatizada.
-* **Simulação de Vendas:** Com bibliotecas como **Pandas** e **Numpy**, gerei uma base de dados fictícia com **1.000 registros de vendas**, simulando datas, quantidades e métodos de pagamento.
-* **Data Wrangling:** Tratamento de erros de tipos de dados, limpeza de strings e gestão de diretórios locais.
+
+O que foi feito na prática:
+* **Engenharia de Extração (Python & Regex):** Desenvolvi um script que "minera" os preços e produtos diretamente do código-fonte do site (`delivery.js`). Isso me ensinou a lidar com dados não estruturados e a garantir a integridade da fonte.
+* **Data Wrangling (Pandas & Numpy):** Tratei strings complexas e organizei a estrutura. Gerei um dataset de **1.000 vendas fictícias** aplicadas a uma lógica de negócio realista (mix de produtos e métodos de pagamento).
+* **Business Intelligence (Power BI):** Transformei o CSV resultante em um dashboard estratégico. Superei desafios como a **ordenação cronológica via DAX**, garantindo insights claros sobre faturamento e ticket médio.
 
 ---
 ## Aprendizado:
@@ -36,4 +38,7 @@ Este projeto foi uma jornada de evolução técnica. Meus principais aprendizado
 ---
 ## Links Úteis
 **Repositório do Projeto:** [https://github.com/LBrito-Gaia/Negao-do-Suco-Natural]<br>
-**Notebook de Limpeza:** [https://github.com/LBrito-Gaia/Negao-do-Suco-Natural/blob/main/notebooks/limpeza%20de%20dados.ipynb]
+**Notebook de Limpeza:** [https://github.com/LBrito-Gaia/Negao-do-Suco-Natural/blob/main/notebooks]
+
+
+
